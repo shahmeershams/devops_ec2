@@ -1,0 +1,63 @@
+# Terraform files
+*.tfstate
+*.tfstate.*
+crash.log
+*.tfvars
+*.tfvars.json
+.override.tf
+.override.tf.json
+*_override.tf
+*_override.tf.json
+.terraform/
+.terraform.lock.hcl
+
+# Ansible files
+*.retry
+*.log
+roles/*/defaults/main.yml
+roles/*/vars/main.yml
+roles/*/meta/main.yml
+
+# Docker files
+*.dockerignore
+**/.dockerignore
+**/Dockerfile
+**/Dockerfile.*
+
+# Jenkins files
+.jenkins/
+jenkins*.xml
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Python files (if using Python)
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+*.env
+.venv/
+env/
+venv/
+
+# Node.js files (if using Node.js)
+node_modules/
+
+# IDE files
+.vscode/
+.idea/
+*.iml
+
+# General files
+*.log
+*.bak
+*.swp
+
+# Archive files
+*.zip
+
+# AWS provider folder
+.aws/
+aws/
