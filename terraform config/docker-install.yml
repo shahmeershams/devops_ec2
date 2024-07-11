@@ -1,0 +1,67 @@
+---
+- name: Install Docker and Docker Compose on Ubuntu
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Ensure prerequisites are installed
+      apt:
+        name: 
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - gnupg-agent
+          - software-properties-common
+        state: present
+
+    - name: Add Docker's official GPG key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Add Docker APT repository
+      apt_repository:
+        repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable
+        state: present
+
+    - name: Update APT package index
+      apt:
+        update_cache: yes
+
+    - name: Ensure Docker is installed
+      apt:
+        name: 
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+        state: present
+
+    # - name: Add "ansible_ubuntu_demo" user to "docker" group
+    #   remote_user: ansible_ubuntu_demo
+    #   user:
+    #     name: "ansible_ubuntu_demo"
+    #     group: "docker"
+    #     append: yes
+    #   tags:
+    #     - docker
+
+    - name: Create directory for Docker Compose
+      ansible.builtin.file:
+        path: "{{ ansible_env.HOME }}/.docker/cli-plugins/"
+        state: directory
+        mode: '0755'
+
+    - name: Download Docker Compose
+      ansible.builtin.get_url:
+        url: "https://github.com/docker/compose/releases/download/v2.28.1/docker-compose-linux-x86_64"
+        dest: "{{ ansible_env.HOME }}/.docker/cli-plugins/docker-compose"
+        mode: '0755'
+
+    - name: Verify Docker Compose installation
+      ansible.builtin.command:
+        cmd: docker compose version
+      register: compose_version
+      changed_when: false
+
+    - debug:
+        msg: "{{ compose_version.stdout }}"
